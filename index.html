@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест по синтаксису</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            background: #fdf2f2;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: none; /* Таймер скрыт до старта */
+        }
+        .instruction {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+            border: 2px solid #ffe0b2;
+        }
+        .question {
+            margin: 30px 0;
+            padding: 30px;
+            background: #fafafa;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            display: none; /* Все вопросы скрыты по умолчанию */
+        }
+        .options label {
+            display: block;
+            margin: 12px 0;
+            padding: 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .options label:hover {
+            background: #e8f5f9;
+            border-color: #3498db;
+        }
+        input[type="radio"] {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+        }
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        .btn.start-btn {
+            background: #27ae60;
+        }
+        .btn.start-btn:hover {
+            background: #229954;
+        }
+        .result {
+            display: none;
+            margin-top: 40px;
+            padding: 30px;
+            background: #e8f5e9;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>Тест по синтаксису</div>
+            <div class="timer" id="timer">15:00</div>
+        </div>
+        
+        <!-- Инструкция (видна по умолчанию) -->
+        <div class="instruction" id="instructionBlock">
+            <h2>📋 Инструкция к тесту</h2>
+            <p>Тест состоит из <strong>10 вопросов</strong> по теме «Синтаксис».</p>
+            <p>⏰ На выполнение теста отводится <strong>15 минут</strong>.</p>
+            <p>В каждом вопросе выберите <strong>один</strong> правильный вариант ответа.</p>
+            <p>Нажмите кнопку «Начать тест», чтобы стартовать отсчёт времени.</p>
+            <p>⚠️ Если время истечёт, тест автоматически завершится. Все неотвеченные вопросы будут засчитаны как неправильные.</p>
+        </div>
+
+        <!-- Кнопка начала (видна по умолчанию) -->
+        <button class="btn start-btn" onclick="startTest()">Начать тест</button>
+
+        <!-- Вопрос 1 (скрыт по умолчанию) -->
+        <div class="question" id="question1">
+            <h3>Вопрос 1 из 10.</h3>
+            <p>Откуда произошло слово «синтаксис»?</p>
+            <div class="options">
+                <label><input type="radio" name="q1" value="1"> 1. Из древнерусского языка (означает «связь» или «соединение»).</label>
+                <label><input type="radio" name="q1" value="2"> 2. Из греческого языка (означает «составление, построение, строй»).</label>
+                <label><input type="radio" name="q1" value="3"> 3. Из латинского языка (означает «разбор» или «анализ»).</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(1)">Далее</button>
+        </div>
+
+        <!-- Вопрос 2 (скрыт по умолчанию) -->
+        <div class="question" id="question2" style="display:none;">
+            <h3>Вопрос 2 из 10.</h3>
+            <p>Сколько значений имеет термин «синтаксис» согласно тексту?</p>
+            <div class="options">
+                <label><input type="radio" name="q2" value="1"> 1. Два.</label>
+                <label><input type="radio" name="q2" value="2"> 2. Одно.</label>
+                <label><input type="radio" name="q2" value="3"> 3. Три.</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(2)">Далее</button>
+        </div>
+
+        <!-- Вопрос 3 (скрыт по умолчанию) -->
+        <div class="question" id="question3" style="display:none;">
+            <h3>Вопрос 3 из 10.</h3>
+            <p>Что изучает наука синтаксис?</p>
+            <div class="options">
+                <label><input type="radio" name="q3" value="1"> 1. Синтаксические конструкции, правила их образования и функционирования.</label>
+                <label><input type="radio" name="q3" value="2"> 2. Только правила постановки ударений.</label>
+                <label><input type="radio" name="q3" value="3"> 3. Только историю развития русского языка.</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(3)">Далее</button>
+        </div>
+
+        <!-- Вопрос 4 (скрыт по умолчанию) -->
+        <div class="question" id="question4" style="display:none;">
+            <h3>Вопрос 4 из 10.</h3>
+            <p>Какие конструкции изучает синтаксис?</p>
+            <div class="options">
+                <label><input type="radio" name="q4" value="1"> 1. Только сложные предложения и тексты.</label>
+                <label><input type="radio" name="q4" value="2"> 2. Словосочетания, простое и сложное предложение, фрагменты текста.</label>
+                <label><input type="radio" name="q4" value="3"> 3. Только словосочетания и простые предложения.</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(4)">Далее</button>
+        </div>
+
+        <!-- Вопрос 5 (скрыт по умолчанию) -->
+        <div class="question" id="question5" style="display:none;">
+            <h3>Вопрос 5 из 10.</h3>
+            <p>Что ещё входит в сферу синтаксиса, кроме предложений?</p>
+            <div class="options">
+                <label><input type="radio" name="q5" value="1"> 1. Только морфемы и фонемы.</label>
+                <label><input type="radio" name="q5" value="2"> 2. Только фразеологизмы и устойчивые выражения.</label>
+                <label><input type="radio" name="q5" value="3"> 3. Слово и форма слова как компоненты синтаксических единиц.</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(5)">Далее</button>
+        </div>
+
+        <!-- Вопрос 6 (скрыт по умолчанию) -->
+        <div class="question" id="question6" style="display:none;">
+            <h3>Вопрос 6 из 10.</h3>
+            <p>Как В. А. Белошапкова определяет подход к изучению слова в синтаксисе?</p>
+            <div class="options">
+                <label><input type="radio" name="q6" value="1"> 1. Слово рассматривается со стороны его связей с другими словами и функций в составе синтаксических единиц.</label>
+                <label><input type="radio" name="q6" value="2"> 2. Слово изучается только в отрыве от других слов.</label>
+                <label><input type="radio" name="q6" value="3"> 3. Слово изучается только с точки зрения его лексического значения.</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(6)">Далее</button>
+        </div>
+
+        <!-- Вопрос 7 (скрыт по умолчанию) -->
+        <div class="question" id="question7" style="display:none;">
+            <h3>Вопрос 7 из 10.</h3>
+            <p>Что такое форма слова (словоформа) в контексте синтаксиса?</p>
+            <div class="options">
+                <label><input type="radio" name="q7" value="1"> 1. Это форма отдельного конкретного слова, которая участвует в образовании словосочетаний и предложений.</label>
+                <label><input type="radio" name="q7" value="2"> 2. Это изменение слова только по родам и числам.</label>
+                <label><input type="radio" name="q7" value="3"> 3. Это только начальная форма слова (именительный падеж).</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(7)">Далее</button>
+        </div>
+
+        <!-- Вопрос 8 (скрыт по умолчанию) -->
+        <div class="question" id="question8" style="display:none;">
+            <h3>Вопрос 8 из 10.</h3>
+            <p>На основе какого типа связи образуется словосочетание?</p>
+            <div class="options">
+                <label><input type="radio" name="q8" value="1"> 1. На основе подчинительной связи (между главным и зависимым словом).</label>
+                <label><input type="radio" name="q8" value="2"> 2. На основе сочинительной связи (между равноправными словами).</label>
+                <label><input type="radio" name="q8" value="3"> 3. На основе предикативной связи (только между подлежащим и сказуемым).</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(8)">Далее</button>
+        </div>
+
+        <!-- Вопрос 9 (скрыт по умолчанию) -->
+        <div class="question" id="question9" style="display:none;">
+            <h3>Вопрос 9 из 10.</h3>
+            <p>Приведи пример из текста, где одно слово задаёт форму другому слову.</p>
+            <div class="options">
+                <label><input type="radio" name="q9" value="1"> 1. «красивый дом — красивые дома».</label>
+                <label><input type="radio" name="q9" value="2"> 2. «дом строит новый».</label>
+                <label><input type="radio" name="q9" value="3"> 3. «новый дом» (слово «новый» подчиняет себе форму зависимого слова).</label>
+            </div>
+            <button class="btn" onclick="nextQuestion(9)">Далее</button>
+        </div>
+
+        <!-- Вопрос 10 (скрыт по умолчанию) -->
+        <div class="question" id="question10" style="display:none;">
+            <h3>Вопрос 10 из 10.</h3>
+            <p>Какие примеры словоформ приводятся в тексте для показа их роли в образовании синтаксических конструкций?</p>
+            <div class="options">
+                <label><input type="radio" name="q10" value="1"> 1. «дом, дома, дому».</label>
+                <label><input type="radio" name="q10" value="2"> 2. «бежать, бегать, беговой».</label>
+                <label><input type="radio" name="q10" value="3"> 3. «читать книгу, читающий книгу, ученик читает».</label>
+            </div>
+            <button class="btn" onclick="showResults()">Проверить результаты</button>
+        </div>
+
+        <!-- Результаты (скрыты по умолчанию) -->
+        <div class="result" id="resultBlock">
+            <h2>📊 Результаты теста</h2>
+            <div class="score" id="scoreText">0 из 10 правильных ответов</div>
+            <div id="details">
+                <ul style="margin: 20px 0; padding-left: 20px;"></ul>
+            </div>
+            <div style="margin-top: 20px; font-size: 14px;">
+                <p><strong>Примечание:</strong> неотвеченные вопросы отмечены как «Не отвечено» и засчитаны как ошибки.</p>
+            </div>
+            <button class="btn" onclick="location.reload()">🔄 Перезапустить тест</button>
+        </div>
+    </div>
+
+    <script>
+        let timeLeft = 900; // 15 минут = 900 секунд
+        let timerId = null;
+        const correctAnswers = {
+            q1: "2",
+            q2: "3",
+            q3: "1",
+            q4: "2",
+            q5: "3",
+            q6: "1",
+            q7: "1",
+            q8: "1",
+            q9: "3",
+            q10: "3"
+        };
+
+        function startTest() {
+            // Скрываем инструкцию и кнопку начала
+            document.getElementById('instructionBlock').style.display = 'none';
+            document.querySelector('.start-btn').style.display = 'none';
+            
+            // Показываем первый вопрос
+            document.getElementById('question1').style.display = 'block';
+            
+            // Показываем таймер
+            document.getElementById('timer').style.display = 'inline-block';
+            
+            // Запускаем таймер
+            timerId = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    showResults();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Меняем цвет при приближении к концу
+            if (timeLeft <= 300) { // 5 минут
+                document.getElementById('timer').style.color = '#c0392b';
+            } else if (timeLeft <= 600) { // 10 минут
+                document.getElementById('timer').style.color = '#f39c12';
+            } else {
+                document.getElementById('timer').style.color = '#e74c3c';
+            }
+        }
+
+        function nextQuestion(index) {
+            // Проверяем, выбран ли ответ
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            
+            if (!selected) {
+                alert('⚠️ Пожалуйста, выберите ответ на вопрос, прежде чем переходить дальше!');
+                return;
+            }
+
+            // Скрываем текущий вопрос
+            document.getElementById(`question${index}`).style.display = 'none';
+            
+            // Если это последний вопрос — показываем результаты, иначе следующий вопрос
+            if (index === 10) {
+                showResults();
+            } else {
+                document.getElementById(`question${index + 1}`).style.display = 'block';
+            }
+        }
+
+        function showResults() {
+            clearInterval(timerId);
+            
+            // Скрываем таймер
+            document.getElementById('timer').style.display = 'none';
+            
+            // Скрываем все вопросы
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`question${i}`).style.display = 'none';
+            }
+            
+            let correct = 0;
+            let feedback = '<ul>';
+            
+            for (let i = 1; i <= 10; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                const userAnswer = selected ? selected.value : "none";
+                const correctAnswer = correctAnswers[`q${i}`];
+                
+                if (userAnswer === correctAnswer) {
+                    correct++;
+                    feedback += `<li style="color: #27ae60; margin: 8px 0;">✅ Вопрос ${i}: Правильно (ответ ${correctAnswer})</li>`;
+                } else if (userAnswer === "none") {
+                    feedback += `<li style="color: #e74c3c; margin: 8px 0; font-weight: bold;">⚠️ Вопрос ${i}: Не отвечено (правильно: ${correctAnswer}) — засчитано как ошибка</li>`;
+                } else {
+                    feedback += `<li style="color: #c0392c; margin: 8px 0;">❌ Вопрос ${i}: Неправильно (вы выбрали: ${userAnswer}, правильно: ${correctAnswer})</li>`;
+                }
+            }
+            
+            feedback += '</ul>';
+            
+            document.getElementById('scoreText').textContent = `${correct} из 10 правильных ответов`;
+            document.getElementById('details').innerHTML = feedback;
+            document.getElementById('resultBlock').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
